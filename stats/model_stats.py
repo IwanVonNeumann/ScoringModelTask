@@ -3,7 +3,7 @@ from sklearn.ensemble import RandomForestClassifier
 from data.data_utils import DataUtils
 
 
-class ModelValidator(object):
+class ModelStats(object):
 
     @staticmethod
     def compare_binary_vectors(a, b):
@@ -29,11 +29,11 @@ class ModelValidator(object):
             target = [x[0] for x in known]
             train = [x[1:] for x in known]
 
-            rf_classifier = RandomForestClassifier(n_estimators=100)
+            rf_classifier = RandomForestClassifier()
             rf_classifier.fit(train, target)
             prediction = rf_classifier.predict(problem)
 
-            precision = ModelValidator.compare_binary_vectors(prediction, answer)
+            precision = ModelStats.compare_binary_vectors(prediction, answer)
             acc_precision += precision
 
             if verbose:
@@ -47,7 +47,7 @@ class ModelValidator(object):
         target = [x[0] for x in data]
         train = [x[1:] for x in data]
 
-        rf_classifier = RandomForestClassifier(n_estimators=100)
+        rf_classifier = RandomForestClassifier()
         rf_classifier.fit(train, target)
         feature_importances = [float(x) for x in rf_classifier.feature_importances_]
         return DataUtils.sort_dict(dict(zip(feature_names[1:], feature_importances)))

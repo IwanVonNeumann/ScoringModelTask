@@ -3,7 +3,7 @@ from random import shuffle
 from data.data_preprocessor import DataPreprocessor
 from data.data_utils import DataUtils
 from data.excel_parser import ExcelParser
-from model.model_validator import ModelValidator
+from stats.model_stats import ModelStats
 
 FILE_NAME = "Task_scoring_modeller_Nov2016.xlsx"
 WORKSHEET_NUMBER = 3
@@ -21,7 +21,7 @@ shuffle(pre_processed_data)
 feature_names = DataUtils.extract_keys(pre_processed_data)
 only_values = DataUtils.extract_values(pre_processed_data)
 
-feature_importances = ModelValidator.calc_feature_importances(only_values, feature_names)
+feature_importances = ModelStats.calc_feature_importances(only_values, feature_names)
 print(DataUtils.format_float_dict(feature_importances, 3))
 
 excel_parser.close()

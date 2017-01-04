@@ -5,7 +5,7 @@ from sklearn.ensemble import RandomForestClassifier
 from data.data_preprocessor import DataPreprocessor
 from data.data_utils import DataUtils
 from data.excel_parser import ExcelParser
-from model.model_validator import ModelValidator
+from stats.model_stats import ModelStats
 
 FILE_NAME = "Task_scoring_modeller_Nov2016.xlsx"
 WORKSHEET_NUMBER = 3
@@ -46,7 +46,7 @@ only_values = DataUtils.extract_values(pre_processed_data)
 
 # ModelValidator.compare_binary_vectors(prediction, answer)
 
-precision = ModelValidator.cross_validate(only_values, 10, verbose=True)
+precision = ModelStats.cross_validate(only_values, 10, verbose=True)
 print(precision)
 
 # print(prediction)

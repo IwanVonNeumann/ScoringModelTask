@@ -7,7 +7,7 @@ class ExcelParser(object):
     def __init__(self, file_name, sheet_number):
         self.file_name = file_name
         self.sheet_number = sheet_number
-        self.RESOURCES_ROOT = "../resources/"
+        self.RESOURCES_ROOT = "resources/"
 
         self.excel = self.setup_excel_app()
         self.work_book = self.setup_workbook()
