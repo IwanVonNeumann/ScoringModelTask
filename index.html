@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scoring task report</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <style>
+        .container {
+            max-width: 960px;
+            margin: 2rem auto 4rem;
+        }
+
+        .overall-header {
+            margin: 0 0 2.5rem;
+        }
+
+        .section + .section {
+            margin-top: 3.25rem;
+        }
+
+        .section-header {
+            margin: 0;
+        }
+
+        .subsection {
+            margin: 2rem 0;
+        }
+
+        .subsection-header {
+            margin-bottom: .5rem;
+        }
+
+        .subsection-content > div {
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="overall-header">
+        Loan application scoring model
+    </h2>
+
+    <div class="section">
+        <h3 class="section-header">
+            Overview
+        </h3>
+        <div class="section-content">
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Problem summary
+                </h4>
+                <div class="subsection-content">
+                    Based on the given data set create credit scoring model for loan application evaluation to support
+                    lending decision. Model should discriminate between <strong>GOOD</strong>/<strong>BAD</strong>
+                    clients.
+                </div>
+            </div>
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Tools used
+                </h4>
+                <div class="subsection-content">
+                    <strong>Python 3</strong> programming language and <strong>JetBrains PyCharm IDE</strong>,
+                    <strong>Random Forest</strong> algorithm implemented in <strong>scikit-learn</strong> machine
+                    learning library.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3 class="section-header">
+            Data preprocessing
+        </h3>
+        <div class="section-content">
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Data filtering
+                </h4>
+
+                <div class="subsection-content">
+                    <div>
+                        <div>
+                            Records provided: <strong>32 144</strong>.
+                        </div>
+                        <div>
+                            Target feature: <code>status</code>.
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            Records found with <code>status='INDETERMINED'</code>: <strong>705</strong>.
+                        </div>
+                        <div>
+                            Records found with missing field values: <strong>1 481</strong>.
+                        </div>
+                        <div>
+                            Missing fields were:
+                            <code>accept_news</code>,
+                            <code>avg_contract_amount</code>,
+                            <code>ci_p1m_req_count</code>,
+                            <code>max_contract_amount</code>,
+                            <code>monthly_income</code>,
+                            <code>monthly_liabilities</code>,
+                            <code>open_credits_count</code>,
+                            <code>p1m_req_cnt</code>,
+                            <code>sum_ConsumerLoan</code>,
+                            <code>sum_contract_amount</code>,
+                            <code>sum_loans_taken_p12m</code>,
+                            <code>term</code>.
+                        </div>
+                    </div>
+
+                    <div>
+                        Both kinds of records mentioned (<strong>6.8%</strong> of total) were filtered out. Thus
+                        <strong>29&nbsp;958</strong> records considered useful and left for further examination.
+                    </div>
+
+                    <div>
+                        The field <code>client_id</code> was removed from all records before analysis assuming zero
+                        correlation with <code>status</code>.
+                    </div>
+                </div>
+            </div>
+
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Data transformation
+                </h4>
+                <div class="subsection-content">
+                    <div>
+                        For further work we need to convert string/enumeration data into numerical. Related fields are
+                        the following:
+                        <code>actual_city</code>,
+                        <code>application_type</code>,
+                        <code>bank</code>,
+                        <code>email_domain</code>,
+                        <code>gender</code>,
+                        <code>mobile_operator</code>,
+                        <code>work_status</code>.
+                    </div>
+
+                    <div>
+                        <div>
+                            Field <code>gender</code> and target feature <code>status</code> were converted to binary
+                            according to the following rules.
+                        </div>
+                        <div>
+                            <code>gender: {'FEMALE': 0, 'MALE': 1}</code>
+                        </div>
+                        <div>
+                            <code>status: {'BAD': 0, 'GOOD': 1}</code>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            The rest fields of mentioned were processed in two steps. Firstly values observed with
+                            frequency below <strong>5%</strong> were considered rare and merged into group
+                            <code>OTHER</code>. After grouping they have the following frequencies of values.
+                        </div>
+                        <div>
+                            <code>
+                                mobile_operator: {'LaiLai': 0.293, 'Beeline': 0.169, 'Bali': 0.111, 'Magticom': 0.265,
+                                'Bani': 0.061, 'Geocell': 0.099, 'OTHER': 0.003}
+                            </code>
+                        </div>
+                        <div>
+                            <code>
+                                email_domain: {'mail.ru': 0.534, 'gmail.com': 0.241, 'yahoo.com': 0.097, 'OTHER': 0.128}
+                            </code>
+                        </div>
+                        <div>
+                            <code>
+                                application_type: {'Type1': 0.885, 'Type2': 0.102, 'OTHER': 0.014}
+                            </code>
+                        </div>
+                        <div>
+                            <code>
+                                actual_city: {'თბილისი': 0.448, 'ქუთაისი': 0.051, 'ბათუმი': 0.074, 'OTHER': 0.427}
+                            </code>
+                        </div>
+                        <div>
+                            <code>
+                                bank: {'BG': 0.555, 'LB': 0.154, 'TB': 0.239, 'OTHER': 0.052}
+                            </code>
+                        </div>
+                        <div>
+                            <code>
+                                work_status: {'Working': 0.753, 'Self-employed person': 0.169, 'OTHER': 0.078}
+                            </code>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            Then each of these fields was split into several binary ones corresponding to possible
+                            values in e.g. the following fashion.
+                        </div>
+                        <div>
+                            <code>
+                                email_domain -> email_domain=gmail.com, email_domain=mail.ru, email_domain=yahoo.com,
+                                email_domain=OTHER
+                            </code>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div>
+                            Existing fields may be trivially bound to new. Splitting features and converting them to
+                            binary format may be easily accomplished using <strong>scikit-learn</strong> library:
+                        </div>
+                        <div>
+                            <code>dict_vectorizer = DictVectorizer()</code>
+                        </div>
+                        <div>
+                            <code>transformed_data = dict_vectorizer.fit_transform(data).toarray()</code>
+                        </div>
+                        <div>
+                            <code>feature_names = dict_vectorizer.get_feature_names()</code>
+                        </div>
+                    </div>
+
+                    <div>
+                        After the transformation described features count increases from <strong>38</strong> to
+                        <strong>57</strong> (counting target feature).
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3 class="section-header">
+            Data analysis
+        </h3>
+
+        <div class="section-content">
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Algorithm
+                </h4>
+                <div class="subsection-content">
+                    For scoring model creation was used <strong>Random Forest</strong> algorithm.
+                </div>
+            </div>
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Model usage
+                </h4>
+                <div class="subsection-content">
+                    Model usage.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3 class="section-header">
+            Conclusion
+        </h3>
+
+        <div class="section-content">
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Model precision
+                </h4>
+                <div class="subsection-content">
+                    <strong>Cross-validation</strong> method was used to evaluate model precision: dataset was split
+                    into <strong>k</strong> equal chunks, model was trained on <strong>k-1</strong> chunk and validated
+                    on the rest one, changing the validation chunk on each step. <strong>k=10</strong> value used and
+                    mean precision reached was <strong>0.878</strong> which may be considered as model precision rate.
+                </div>
+            </div>
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Variable importance
+                </h4>
+                <div class="subsection-content">
+                    <div>
+                        <div>
+                            Variable importance rates may be extracted from a model using library means:
+                            <code>model.feature_importances_</code>.
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            Top-10 important features and their weights (sum of all weights is <strong>1</strong>) are
+                            the following.
+                        </div>
+                        <div>
+                            <code>days_since_most_recent_cr_start: 0.056</code>
+                        </div>
+                        <div>
+                            <code>days_since_first_cr_start: 0.055</code>
+                        </div>
+                        <div>
+                            <code>sum_ConsumerLoan: 0.048</code>
+                        </div>
+                        <div>
+                            <code>sum_contract_amount: 0.047</code>
+                        </div>
+                        <div>
+                            <code>avg_contract_amount: 0.045</code>
+                        </div>
+                        <div>
+                            <code>max_contract_amount: 0.044</code>
+                        </div>
+                        <div>
+                            <code>client_age: 0.043</code>
+                        </div>
+                        <div>
+                            <code>application_day: 0.04</code>
+                        </div>
+                        <div>
+                            <code>ci_p6m_req_count: 0.036</code>
+                        </div>
+                        <div>
+                            <code>ci_p3m_req_count: 0.036</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
