@@ -236,7 +236,7 @@
 
     <div class="section">
         <h3 class="section-header">
-            Data analysis
+            Prediction model
         </h3>
 
         <div class="section-content">
@@ -245,8 +245,23 @@
                     Algorithm
                 </h4>
                 <div class="subsection-content">
-                    For scoring model creation was used <strong>Random Forest</strong> algorithm implemented in
-                    <strong>scikit-learn</strong> library.
+                    <div>
+                        For prediction model creation was used <strong>Random Forest</strong> algorithm implemented in
+                        <strong>scikit-learn</strong> library.
+                    </div>
+                    <div>
+                        <div>
+                            The following model parameters were used:
+                        </div>
+                        <div>
+                            <code>n_estimators=50</code> - the number of trees in the forest - chosen empirically;
+                        </div>
+                        <div>
+                            <code>max_features=sqrt(n_features)</code> - the number of features to consider when
+                            looking for the best split - suggested value by <strong>scikit-learn</strong> library
+                            documentation which is default in the implementation.
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="subsection">
@@ -293,7 +308,7 @@
                         whether a client is <strong>GOOD</strong>. Having this evaluation we may chose some trust level
                         <strong>&alpha;&nbsp;&isin;&nbsp;[0,&nbsp;1]</strong> (&alpha;=0.5 in case of using classifying
                         model) trying to maximize expectation of income from particular client (maybe having previously
-                        classified a client by tendency to extend loans).
+                        classified a client e.g. by tendency to extend loans).
                     </div>
                 </div>
             </div>
@@ -311,11 +326,34 @@
                     Model precision
                 </h4>
                 <div class="subsection-content">
-                    <strong>Cross-validation</strong> method was used to evaluate model precision: dataset was split
-                    into <strong>k</strong> equal chunks, model was trained on <strong>k-1</strong> chunk and validated
-                    on the rest one, changing the validation chunk on each step. <strong>k=10</strong> value used and
-                    mean precision reached was <strong>0.878</strong> which may be considered as model precision rate.
+                    <div>
+                        Firstly <strong>Cross-validation</strong> method was used to evaluate model precision: dataset
+                        was split into <strong>k</strong> equal chunks, model was trained on <strong>k-1</strong> chunk
+                        and validated on the rest one, changing the validation chunk on each step. <strong>k=10</strong>
+                        value used and mean precision reached was <strong>0.878</strong> which may be considered as
+                        model precision rate.
+                    </div>
+                    <div>
+                        <div>
+                            However <strong>Random Forest</strong> algorithm provides "inbuilt" validation possibility -
+                            <strong>Out-of-bag</strong> test. To use this validation method we need just specify a
+                            parameter <code>oob_score=True</code> when creating a model:
+                        </div>
+                        <div>
+                            <code>rf_classifier = RandomForestClassifier(oob_score=True)</code>
+                        </div>
+                        <div>
+                            <code>rf_classifier.fit(train, target)</code>
+                        </div>
+                        <div>
+                            <code>oob_score = rf_classifier.oob_score_</code>
+                        </div>
+                    </div>
+                    <div>
+                        <strong>Out-of-bag</strong> test shows the same accuracy rate: <strong>0.878</strong>.
+                    </div>
                 </div>
+
             </div>
             <div class="subsection">
                 <h4 class="subsection-header">
@@ -363,6 +401,23 @@
                         <div>
                             <code>ci_p3m_req_count: 0.036</code>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Notes
+                </h4>
+                <div class="subsection-content">
+                    <div>
+                        Though the parameter <code>n_estimators=50</code> - the number of trees in the forest - value
+                        was chosen, default value <code>n_estimators=10</code> may be used without losing much
+                        precision: the results are <strong>0.878</strong> and <strong>0.867</strong> respectively.
+                    </div>
+                    <div>
+                        Documentation of <strong>scikit-learn</strong> library suggests using a model parameter
+                        <code>max_depth=None</code> in combination with <code>min_samples_split=1</code>, but
+                        software implementation bug was encountered trying to run the model with this configuration.
                     </div>
                 </div>
             </div>

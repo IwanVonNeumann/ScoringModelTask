@@ -36,7 +36,7 @@ class ModelStats(object):
             target = [x[0] for x in known]
             train = [x[1:] for x in known]
 
-            rf_classifier = RandomForestClassifier()
+            rf_classifier = RandomForestClassifier(n_estimators=50)
             rf_classifier.fit(train, target)
             prediction = rf_classifier.predict(problem)
 
@@ -47,6 +47,15 @@ class ModelStats(object):
                 print(i, round(precision, 3))
 
         return acc_precision / k
+
+    @staticmethod
+    def oob_validate(data):
+        target = [x[0] for x in data]
+        train = [x[1:] for x in data]
+
+        rf_classifier = RandomForestClassifier(n_estimators=50, oob_score=True)
+        rf_classifier.fit(train, target)
+        return rf_classifier.oob_score_
 
     @staticmethod
     def calc_feature_importances(data, feature_names):
