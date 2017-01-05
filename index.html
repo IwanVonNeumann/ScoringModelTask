@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <title>Scoring task report</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
         .container {
             max-width: 960px;
-            margin: 2rem auto 4rem;
+            margin: 3.25rem auto 6rem;
         }
 
         .overall-header {
@@ -305,7 +305,7 @@
                     <div>
                         The result of applying regression procedure mentioned to a client with unknown status is a
                         number in bounds <strong>[0,&nbsp;1]</strong> which actually is a probability evaluation of
-                        whether a client is <strong>GOOD</strong>. Having this evaluation we may chose some trust level
+                        whether a client is <strong>GOOD</strong>. Having this evaluation we may choose some trust level
                         <strong>&alpha;&nbsp;&isin;&nbsp;[0,&nbsp;1]</strong> (&alpha;=0.5 in case of using classifying
                         model) trying to maximize expectation of income from particular client (maybe having previously
                         classified a client e.g. by tendency to extend loans).
@@ -418,6 +418,46 @@
                         Documentation of <strong>scikit-learn</strong> library suggests using a model parameter
                         <code>max_depth=None</code> in combination with <code>min_samples_split=1</code>, but
                         software implementation bug was encountered trying to run the model with this configuration.
+                    </div>
+                </div>
+            </div>
+            <div class="subsection">
+                <h4 class="subsection-header">
+                    Links
+                </h4>
+                <div class="subsection-content">
+                    <div>
+                        <div>
+                            Software illustrating described procedures with environment setup instructions, data source
+                            and this report may be found at:
+                        </div>
+                        <div>
+                            <a href="https://github.com/IwanVonNeumann/ScoringModelTask.git" target="_blank">
+                                https://github.com/IwanVonNeumann/ScoringModelTask.git
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            Leo Breiman's original publication describing <strong>Random Forest</strong> algorithm:
+                        </div>
+                        <div>
+                            <a href="https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf" target="_blank">
+                                https://www.stat.berkeley.edu/~breiman/randomforest2001.pdf
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <strong>scikit-learn</strong> documentation regarding <strong>Random Forest</strong>
+                            algorithm software implementation:
+                        </div>
+                        <div>
+                            <a href="http://scikit-learn.org/stable/modules/ensemble.html#random-forests"
+                               target="_blank">
+                                http://scikit-learn.org/stable/modules/ensemble.html#random-forests
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
