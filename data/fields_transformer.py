@@ -31,7 +31,7 @@ class FieldsTransformer(object):
         values = [item[field_name] for item in data]
         merged_rel_f = DataUtils.count_relative_frequencies_and_merge_rare(values, threshold)
         if verbose:
-            print(field_name, DataUtils.format_dict(merged_rel_f, 3))
+            print(field_name, DataUtils.format_float_dict(merged_rel_f, 3))
         for item in data:
             FieldsTransformer.replace_value(item, field_name, merged_rel_f, default_value)
 

@@ -245,7 +245,8 @@
                     Algorithm
                 </h4>
                 <div class="subsection-content">
-                    For scoring model creation was used <strong>Random Forest</strong> algorithm.
+                    For scoring model creation was used <strong>Random Forest</strong> algorithm implemented in
+                    <strong>scikit-learn</strong> library.
                 </div>
             </div>
             <div class="subsection">
@@ -253,7 +254,47 @@
                     Model usage
                 </h4>
                 <div class="subsection-content">
-                    Model usage.
+                    <div>
+                        <div>
+                            For simple discrimination between <strong>GOOD</strong>/<strong>BAD</strong> clients may be
+                            used class <code>RandomForestClassifier</code>:
+                        </div>
+                        <div>
+                            <code>rf_classifier = RandomForestClassifier()</code>
+                        </div>
+                        <div>
+                            <code>rf_classifier.fit(train, target)</code>
+                        </div>
+                        <div>
+                            <code>prediction = rf_classifier.predict(problem)</code>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            However classification problem is solved by decision trees voting in ensemble. So the result
+                            class is one simply having the majority of votes which in turn means that it's probability
+                            evaluation is <strong>&gt;&nbsp;0.5</strong>. In case we need to get the probability
+                            evaluation of whether a client is <strong>GOOD</strong> the problem becomes a regression
+                            problem. Now the class <code>RandomForestRegressor</code> comes into play:
+                        </div>
+                        <div>
+                            <code>rf_regressor = RandomForestRegressor()</code>
+                        </div>
+                        <div>
+                            <code>rf_regressor.fit(train, target)</code>
+                        </div>
+                        <div>
+                            <code>prediction = rf_regressor.predict(problem)</code>
+                        </div>
+                    </div>
+                    <div>
+                        The result of applying regression procedure mentioned to a client with unknown status is a
+                        number in bounds <strong>[0,&nbsp;1]</strong> which actually is a probability evaluation of
+                        whether a client is <strong>GOOD</strong>. Having this evaluation we may chose some trust level
+                        <strong>&alpha;&nbsp;&isin;&nbsp;[0,&nbsp;1]</strong> (&alpha;=0.5 in case of using classifying
+                        model) trying to maximize expectation of income from particular client (maybe having previously
+                        classified a client by tendency to extend loans).
+                    </div>
                 </div>
             </div>
         </div>

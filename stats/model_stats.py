@@ -4,14 +4,21 @@ from data.data_utils import DataUtils
 
 
 class ModelStats(object):
-
     @staticmethod
-    def compare_binary_vectors(a, b):
+    def compare_binary_vectors(a, b, verbose=False):
         mistakes = 0
         for i in range(0, len(a)):
             if a[i] != b[i]:
                 mistakes += 1
-        return 1 - mistakes / len(a)
+            if verbose:
+                print(i, a[i], b[i])
+
+        precision = 1 - mistakes / len(a)
+
+        if verbose:
+            print("Precision:", precision)
+
+        return precision
 
     @staticmethod
     def cross_validate(data, k, verbose=False):
@@ -40,7 +47,6 @@ class ModelStats(object):
                 print(i, round(precision, 3))
 
         return acc_precision / k
-
 
     @staticmethod
     def calc_feature_importances(data, feature_names):

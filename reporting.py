@@ -24,4 +24,7 @@ only_values = DataUtils.extract_values(pre_processed_data)
 feature_importances = ModelStats.calc_feature_importances(only_values, feature_names)
 print(DataUtils.format_float_dict(feature_importances, 3))
 
+precision = ModelStats.cross_validate(only_values, 10, verbose=True)
+print(precision)
+
 excel_parser.close()
