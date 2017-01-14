@@ -1,4 +1,6 @@
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import cross_val_score
 
 from data.data_utils import DataUtils
 
@@ -22,8 +24,23 @@ class ModelStats(object):
 
     @staticmethod
     def cross_validate(data, k, verbose=False):
+
+        problem = [x[1:] for x in data]
+        solution = [x[0] for x in data]
+
+        rf_classifier = RandomForestClassifier(n_estimators=50)
+        cvs = cross_val_score(rf_classifier, problem, solution, cv=k)
+
+        if verbose:
+            print([round(x, 3) for x in cvs])
+
+        return np.mean(cvs)
+
+    @staticmethod
+    def cross_validate_fast(data, k, verbose=False):
+
         data_chunks = DataUtils.list_to_chunks(data, k)
-        acc_precision = 0
+        results = list()
 
         for i in range(0, k):
             test = data_chunks[i]
@@ -41,12 +58,12 @@ class ModelStats(object):
             prediction = rf_classifier.predict(problem)
 
             precision = ModelStats.compare_binary_vectors(prediction, answer)
-            acc_precision += precision
+            results.append(precision)
 
-            if verbose:
-                print(i, round(precision, 3))
+        if verbose:
+            print([round(x, 3) for x in results])
 
-        return acc_precision / k
+        return np.mean(results)
 
     @staticmethod
     def oob_validate(data):
