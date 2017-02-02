@@ -23,12 +23,12 @@ class ModelStats(object):
         return precision
 
     @staticmethod
-    def cross_validate(data, k, verbose=False):
+    def cross_validate(data, k, n_estimators=10, verbose=False):
 
         problem = [x[1:] for x in data]
         solution = [x[0] for x in data]
 
-        rf_classifier = RandomForestClassifier(n_estimators=50)
+        rf_classifier = RandomForestClassifier(n_estimators=n_estimators)
         cvs = cross_val_score(rf_classifier, problem, solution, cv=k)
 
         if verbose:
@@ -37,7 +37,7 @@ class ModelStats(object):
         return np.mean(cvs)
 
     @staticmethod
-    def cross_validate_fast(data, k, verbose=False):
+    def cross_validate_fast(data, k, n_estimators=10, verbose=False):
 
         data_chunks = DataUtils.list_to_chunks(data, k)
         results = list()
@@ -53,7 +53,7 @@ class ModelStats(object):
             target = [x[0] for x in known]
             train = [x[1:] for x in known]
 
-            rf_classifier = RandomForestClassifier(n_estimators=50)
+            rf_classifier = RandomForestClassifier(n_estimators=n_estimators)
             rf_classifier.fit(train, target)
             prediction = rf_classifier.predict(problem)
 
@@ -61,16 +61,16 @@ class ModelStats(object):
             results.append(precision)
 
         if verbose:
-            print([round(x, 3) for x in results])
+            print("Cross-validation rates:", [round(x, 3) for x in results])
 
         return np.mean(results)
 
     @staticmethod
-    def oob_validate(data):
+    def oob_validate(data, n_estimators=50):
         target = [x[0] for x in data]
         train = [x[1:] for x in data]
 
-        rf_classifier = RandomForestClassifier(n_estimators=50, oob_score=True)
+        rf_classifier = RandomForestClassifier(n_estimators=n_estimators, oob_score=True)
         rf_classifier.fit(train, target)
         return rf_classifier.oob_score_
 
