@@ -1,15 +1,11 @@
 from random import shuffle
 
+from dao.clients_dao import get_clients_list
 from data.data_preprocessor import DataPreprocessor
 from data.data_utils import DataUtils
-from data.excel_parser import ExcelParser
 from stats.model_stats import ModelStats
 
-FILE_NAME = "Task_scoring_modeller_Nov2016.xlsx"
-WORKSHEET_NUMBER = 3
-excel_parser = ExcelParser(FILE_NAME, WORKSHEET_NUMBER)
-
-data = excel_parser.extract_mapped_rows(verbose=True)
+data = get_clients_list(verbose=True)
 
 string_fields = ['mobile_operator', 'email_domain', 'application_type', 'actual_city', 'bank', 'work_status']
 FREQUENCY_THRESHOLD = 0.05
@@ -30,5 +26,3 @@ print(precision)
 
 oob_precision = ModelStats.oob_validate(only_values)
 print(oob_precision)
-
-excel_parser.close()

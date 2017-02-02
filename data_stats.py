@@ -1,10 +1,6 @@
-from data.excel_parser import ExcelParser
+from dao.clients_dao import get_clients_list
 
-FILE_NAME = "Task_scoring_modeller_Nov2016.xlsx"
-WORKSHEET_NUMBER = 3
-excel_parser = ExcelParser(FILE_NAME, WORKSHEET_NUMBER)
-
-data = excel_parser.extract_mapped_rows(verbose=True)
+data = get_clients_list(verbose=True)
 STATUS = 'status'
 
 good_clients = [c for c in data if c[STATUS] == "GOOD"]
