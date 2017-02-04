@@ -30,11 +30,8 @@ train = [x[1:] for x in known]
 
 rfClassifier = RandomForestClassifier(n_estimators=100)
 rfClassifier.fit(train, target)
-rfRegressor = RandomForestRegressor(n_estimators=100)
-rfRegressor.fit(train, target)
 
-# prediction = rfClassifier.predict(problem)
-prediction = rfRegressor.predict(problem)
+prediction = rfClassifier.predict(problem)
 
 print(prediction)
 

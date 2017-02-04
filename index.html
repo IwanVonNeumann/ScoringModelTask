@@ -271,8 +271,8 @@
                 <div class="subsection-content">
                     <div>
                         <div>
-                            For simple discrimination between <strong>GOOD</strong>/<strong>BAD</strong> clients may be
-                            used class <code>RandomForestClassifier</code>:
+                            For simple discrimination between <strong>GOOD</strong>/<strong>BAD</strong> clients the
+                            class <code>RandomForestClassifier</code> may be used:
                         </div>
                         <div>
                             <code>rf_classifier = RandomForestClassifier()</code>
@@ -285,35 +285,34 @@
                         </div>
                     </div>
                     <div>
+                        Evaluations are made by decision trees voting for classes in ensemble. Classification
+                        problem is solved by choosing a class simply having the majority of votes (it's probability
+                        evaluation is <strong>&gt;&nbsp;0.5</strong> for our case).
+                    </div>
+                    <div>
                         <div>
-                            However classification problem is solved by decision trees voting in ensemble. So the result
-                            class is one simply having the majority of votes which in turn means that it's probability
-                            evaluation is <strong>&gt;&nbsp;0.5</strong>. In case we need to get the probability
-                            evaluation of whether a client is <strong>GOOD</strong> the problem becomes a regression
-                            problem. Now the class <code>RandomForestRegressor</code> comes into play:
+                            However if we need to know a probability evaluation of some class (e.g. of whether a client
+                            is <strong>GOOD</strong>) we just have to extract the vote rates for all classes and choose
+                            the corresponding one:
                         </div>
                         <div>
-                            <code>rf_regressor = RandomForestRegressor()</code>
-                        </div>
-                        <div>
-                            <code>rf_regressor.fit(train, target)</code>
-                        </div>
-                        <div>
-                            <code>prediction = rf_regressor.predict(problem)</code>
+                            <code>class_probabilities = rfClassifier.predict_proba(problem)</code>
                         </div>
                     </div>
                     <div>
                         <div>
-                            For regression problems is suggested to set <code>max_features=n_features</code>.
+                            Class labels in the same order may be get as following:
+                        </div>
+                        <div>
+                            <code>class_labels = rfClassifier.classes_</code>
                         </div>
                     </div>
                     <div>
-                        The result of applying regression procedure mentioned to a client with unknown status is a
-                        number in bounds <strong>[0,&nbsp;1]</strong> which actually is a probability evaluation of
-                        whether a client is <strong>GOOD</strong>. Having this evaluation we may choose some trust level
-                        <strong>&alpha;&nbsp;&isin;&nbsp;[0,&nbsp;1]</strong> (&alpha;=0.5 in case of using classifying
-                        model) trying to maximize expectation of income from particular client (maybe having previously
-                        classified a client e.g. by tendency to extend loans).
+                        As the result we will get a number in bounds <strong>[0,&nbsp;1]</strong> representing a
+                        sought-for probability evaluation. Having this evaluation we may choose some trust level
+                        <strong>&alpha;&nbsp;&isin;&nbsp;[0,&nbsp;1]</strong> (&alpha;=0.5 in case of classification
+                        problem) trying to maximize expectation of income from particular client (maybe having
+                        previously classified a client e.g. by tendency to extend loans).
                     </div>
                 </div>
             </div>
